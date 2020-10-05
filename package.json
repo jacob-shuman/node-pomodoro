@@ -1,0 +1,23 @@
+{
+  "name": "node-pomodoro",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "build-watch": "tsc -w --pretty"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jacob-shuman/node-pomodoro.git"
+  },
+  "author": "Jacob Shuman",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jacob-shuman/node-pomodoro/issues"
+  },
+  "homepage": "https://github.com/jacob-shuman/node-pomodoro#readme",
+  "devDependencies": {
+    "typescript": "^4.0.3"
+  }
+}
