@@ -25,9 +25,9 @@ export class NPTimer {
   onStop?: () => void;
   onReset?: () => void;
 
-  onHour?: (hour: number) => void;
-  onMinute?: (minute: number) => void;
-  onSecond?: (second: number) => void;
+  onHour?: (remainingTime: NPDuration) => void;
+  onMinute?: (remainingTime: NPDuration) => void;
+  onSecond?: (remainingTime: NPDuration) => void;
 
   public get period(): NPPeriod {
     return this.periods[this.periodIndex];
@@ -46,9 +46,9 @@ export class NPTimer {
     onStart?: () => void;
     onStop?: () => void;
     onReset?: () => void;
-    onHour?: (hour: number) => void;
-    onMinute?: (minute: number) => void;
-    onSecond?: (second: number) => void;
+    onHour?: (remainingTime: NPDuration) => void;
+    onMinute?: (remainingTime: NPDuration) => void;
+    onSecond?: (remainingTime: NPDuration) => void;
   }) {
     const { periods, startImmediately, onPeriodChange } = options;
 
@@ -92,35 +92,31 @@ export class NPTimer {
 
         if (this.periodCounter.hours > 0) {
           if (this.periods[this.periodIndex].onHour) {
-            this.periods[this.periodIndex].onHour!(this.periodCounter.hours);
+            this.periods[this.periodIndex].onHour!(this.periodCounter);
           }
 
           if (this.onHour) {
-            this.onHour!(this.periodCounter.hours);
+            this.onHour!(this.periodCounter);
           }
         }
 
         if (this.periodCounter.minutes > 0) {
           if (this.periods[this.periodIndex].onMinute) {
-            this.periods[this.periodIndex].onMinute!(
-              this.periodCounter.minutes
-            );
+            this.periods[this.periodIndex].onMinute!(this.periodCounter);
           }
 
           if (this.onMinute) {
-            this.onMinute!(this.periodCounter.minutes);
+            this.onMinute!(this.periodCounter);
           }
         }
 
         if (this.periodCounter.seconds > 0) {
           if (this.periods[this.periodIndex].onSecond) {
-            this.periods[this.periodIndex].onSecond!(
-              this.periodCounter.seconds
-            );
+            this.periods[this.periodIndex].onSecond!(this.periodCounter);
           }
 
           if (this.onSecond) {
-            this.onSecond!(this.periodCounter.seconds);
+            this.onSecond!(this.periodCounter);
           }
         }
 

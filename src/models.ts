@@ -22,13 +22,13 @@ export interface NPPeriod {
   onBegin?: (period: number, nextPeriod: number, prevPeriod: number) => void;
 
   // Called once an hour passes
-  onHour?: (hour: number) => void;
+  onHour?: (remainingTime: NPDuration) => void;
 
   // Called once an hour passes
-  onMinute?: (minute: number) => void;
+  onMinute?: (remainingTime: NPDuration) => void;
 
   // Called once an hour passes
-  onSecond?: (second: number) => void;
+  onSecond?: (remainingTime: NPDuration) => void;
 
   // Called when the period ends
   // Args: indexes of current, next, previous periods

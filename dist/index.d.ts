@@ -1,4 +1,4 @@
-import { NPPeriod } from "./models";
+import { NPPeriod, NPDuration } from "./models";
 export declare const isValidPeriod: (period: NPPeriod) => boolean;
 export declare class NPTimer {
     private periodIndex;
@@ -10,9 +10,9 @@ export declare class NPTimer {
     onStart?: () => void;
     onStop?: () => void;
     onReset?: () => void;
-    onHour?: (hour: number) => void;
-    onMinute?: (minute: number) => void;
-    onSecond?: (second: number) => void;
+    onHour?: (remainingTime: NPDuration) => void;
+    onMinute?: (remainingTime: NPDuration) => void;
+    onSecond?: (remainingTime: NPDuration) => void;
     get period(): NPPeriod;
     running: boolean;
     constructor(options: {
@@ -22,9 +22,9 @@ export declare class NPTimer {
         onStart?: () => void;
         onStop?: () => void;
         onReset?: () => void;
-        onHour?: (hour: number) => void;
-        onMinute?: (minute: number) => void;
-        onSecond?: (second: number) => void;
+        onHour?: (remainingTime: NPDuration) => void;
+        onMinute?: (remainingTime: NPDuration) => void;
+        onSecond?: (remainingTime: NPDuration) => void;
     });
     start(): void;
     stop(): void;

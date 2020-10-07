@@ -62,26 +62,26 @@ var NPTimer = /** @class */ (function () {
                 }
                 if (_this.periodCounter.hours > 0) {
                     if (_this.periods[_this.periodIndex].onHour) {
-                        _this.periods[_this.periodIndex].onHour(_this.periodCounter.hours);
+                        _this.periods[_this.periodIndex].onHour(_this.periodCounter);
                     }
                     if (_this.onHour) {
-                        _this.onHour(_this.periodCounter.hours);
+                        _this.onHour(_this.periodCounter);
                     }
                 }
                 if (_this.periodCounter.minutes > 0) {
                     if (_this.periods[_this.periodIndex].onMinute) {
-                        _this.periods[_this.periodIndex].onMinute(_this.periodCounter.minutes);
+                        _this.periods[_this.periodIndex].onMinute(_this.periodCounter);
                     }
                     if (_this.onMinute) {
-                        _this.onMinute(_this.periodCounter.minutes);
+                        _this.onMinute(_this.periodCounter);
                     }
                 }
                 if (_this.periodCounter.seconds > 0) {
                     if (_this.periods[_this.periodIndex].onSecond) {
-                        _this.periods[_this.periodIndex].onSecond(_this.periodCounter.seconds);
+                        _this.periods[_this.periodIndex].onSecond(_this.periodCounter);
                     }
                     if (_this.onSecond) {
-                        _this.onSecond(_this.periodCounter.seconds);
+                        _this.onSecond(_this.periodCounter);
                     }
                 }
                 if (_this.periodCounter.seconds > 1) {

@@ -11,8 +11,8 @@ export interface NPPeriod {
     title: string;
     duration: NPDuration;
     onBegin?: (period: number, nextPeriod: number, prevPeriod: number) => void;
-    onHour?: (hour: number) => void;
-    onMinute?: (minute: number) => void;
-    onSecond?: (second: number) => void;
+    onHour?: (remainingTime: NPDuration) => void;
+    onMinute?: (remainingTime: NPDuration) => void;
+    onSecond?: (remainingTime: NPDuration) => void;
     onEnd?: (period: number, nextPeriod: number, prevPeriod: number) => void;
 }
