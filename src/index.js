@@ -10,7 +10,7 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 exports.NPTimer = exports.isValidPeriod = void 0;
 var models_1 = require("./models");
 exports.isValidPeriod = function (period) {
@@ -39,13 +39,6 @@ var NPTimer = /** @class */ (function () {
             this.start();
         }
     }
-    Object.defineProperty(NPTimer.prototype, "period", {
-        get: function () {
-            return this.periods[this.periodIndex];
-        },
-        enumerable: false,
-        configurable: true
-    });
     NPTimer.prototype.start = function () {
         var _this = this;
         if (!this.running) {
@@ -135,4 +128,21 @@ var NPTimer = /** @class */ (function () {
     return NPTimer;
 }());
 exports.NPTimer = NPTimer;
-exports.default = NPTimer;
+exports["default"] = NPTimer;
+var timer = new NPTimer({
+    periods: [
+        {
+            title: "Work",
+            duration: { hours: 0, minutes: 0, seconds: 5 }
+        },
+        {
+            title: "Break",
+            duration: { hours: 0, minutes: 0, seconds: 5 }
+        },
+    ],
+    onPeriodChange: function (period) {
+        console.log("started period: ", period.title);
+    },
+    startImmediately: true
+});
+timer.start();

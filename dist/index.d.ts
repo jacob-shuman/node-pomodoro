@@ -1,7 +1,7 @@
 import { NPPeriod } from "./models";
 export declare const isValidPeriod: (period: NPPeriod) => boolean;
 export declare class NPTimer {
-    private period;
+    private periodIndex;
     private periods;
     private periodChanged;
     private periodCounter;
@@ -10,6 +10,7 @@ export declare class NPTimer {
     private onStart?;
     private onStop?;
     private onReset?;
+    get period(): NPPeriod;
     running: boolean;
     constructor(options: {
         periods: NPPeriod[];

@@ -9,9 +9,9 @@ export const isValidPeriod = (period: NPPeriod): boolean => {
 };
 
 export class NPTimer {
-  private period: number = 0;
+  private periodIndex: number = 0;
   private periods: NPPeriod[] = [];
-  private periodChanged = false;
+  private periodChanged = true;
   private periodCounter: NPDuration = { hours: 0, minutes: 0, seconds: 0 };
 
   private intervalId?: number;
@@ -24,6 +24,10 @@ export class NPTimer {
   private onStart?: () => void;
   private onStop?: () => void;
   private onReset?: () => void;
+
+  public get period(): NPPeriod {
+    return this.periods[this.periodIndex];
+  }
 
   running: boolean = false;
 
@@ -46,7 +50,7 @@ export class NPTimer {
 
     this.periods = periods;
     this.onPeriodChange = onPeriodChange;
-    this.periodCounter = { ...this.periods[this.period].duration };
+    this.periodCounter = { ...this.periods[this.periodIndex].duration };
 
     if (startImmediately) {
       this.start();
@@ -60,34 +64,41 @@ export class NPTimer {
           this.periodChanged = false;
 
           const nextPeriod =
-            this.period < this.periods.length - 1 ? this.period + 1 : 0;
+            this.periodIndex < this.periods.length - 1
+              ? this.periodIndex + 1
+              : 0;
 
           const prevPeriod =
-            this.period > 0 ? this.period - 1 : this.periods.length - 1;
+            this.periodIndex > 0
+              ? this.periodIndex - 1
+              : this.periods.length - 1;
 
           this.onPeriodChange!(
-            this.periods[this.period],
+            this.periods[this.periodIndex],
             this.periods[nextPeriod],
             this.periods[prevPeriod]
           );
         }
 
-        if (this.periods[this.period].onHour && this.periodCounter.hours > 0) {
-          this.periods[this.period].onHour!(this.periodCounter.hours);
+        if (
+          this.periods[this.periodIndex].onHour &&
+          this.periodCounter.hours > 0
+        ) {
+          this.periods[this.periodIndex].onHour!(this.periodCounter.hours);
         }
 
         if (
-          this.periods[this.period].onMinute &&
+          this.periods[this.periodIndex].onMinute &&
           this.periodCounter.minutes > 0
         ) {
-          this.periods[this.period].onMinute!(this.periodCounter.minutes);
+          this.periods[this.periodIndex].onMinute!(this.periodCounter.minutes);
         }
 
         if (
-          this.periods[this.period].onSecond &&
+          this.periods[this.periodIndex].onSecond &&
           this.periodCounter.seconds > 0
         ) {
-          this.periods[this.period].onSecond!(this.periodCounter.seconds);
+          this.periods[this.periodIndex].onSecond!(this.periodCounter.seconds);
         }
 
         if (this.periodCounter.seconds > 1) {
@@ -104,13 +115,13 @@ export class NPTimer {
           this.periodCounter.minutes < 2 &&
           this.periodCounter.seconds < 2
         ) {
-          if (this.period < this.periods.length - 1) {
-            this.period++;
+          if (this.periodIndex < this.periods.length - 1) {
+            this.periodIndex++;
           } else {
-            this.period = 0;
+            this.periodIndex = 0;
           }
 
-          this.periodCounter = { ...this.periods[this.period].duration };
+          this.periodCounter = { ...this.periods[this.periodIndex].duration };
           this.periodChanged = true;
         }
       }, 1000);
@@ -140,7 +151,7 @@ export class NPTimer {
       this.stop();
     }
 
-    this.period = 0;
+    this.periodIndex = 0;
 
     if (this.onReset) {
       this.onReset();
