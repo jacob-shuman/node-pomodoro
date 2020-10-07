@@ -1,6 +1,8 @@
 # node-pomodoro
 
-<a href="https://pomodoro.jacob-shuman.ca">Check out a demo</a>
+A zero dependency utility for creating pomodoro timers.
+
+<a href="https://pomodoro.jacob-shuman.ca">Try it online!</a>
 
 # Install
 

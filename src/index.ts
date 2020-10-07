@@ -15,11 +15,17 @@ export class NPTimer {
   private periodCounter: NPDuration = { hours: 0, minutes: 0, seconds: 0 };
 
   private intervalId?: number;
+
   private onPeriodChange?: (
     period: NPPeriod,
     nextPeriod: NPPeriod,
     prevPeriod: NPPeriod
   ) => void;
+  private onStart?: () => void;
+  private onStop?: () => void;
+  private onReset?: () => void;
+
+  running: boolean = false;
 
   constructor(options: {
     periods: NPPeriod[];
@@ -47,81 +53,110 @@ export class NPTimer {
     }
   }
 
-  start() {
-    this.intervalId = setInterval(() => {
-      if (this.periodChanged && this.onPeriodChange) {
-        this.periodChanged = false;
+  start(): void {
+    if (!this.running) {
+      this.intervalId = setInterval(() => {
+        if (this.periodChanged && this.onPeriodChange) {
+          this.periodChanged = false;
 
-        const nextPeriod =
-          this.period < this.periods.length - 1 ? this.period + 1 : 0;
+          const nextPeriod =
+            this.period < this.periods.length - 1 ? this.period + 1 : 0;
 
-        const prevPeriod =
-          this.period > 0 ? this.period - 1 : this.periods.length - 1;
+          const prevPeriod =
+            this.period > 0 ? this.period - 1 : this.periods.length - 1;
 
-        this.onPeriodChange!(
-          this.periods[this.period],
-          this.periods[nextPeriod],
-          this.periods[prevPeriod]
-        );
-      }
-
-      if (this.periods[this.period].onHour && this.periodCounter.hours > 0) {
-        this.periods[this.period].onHour!(this.periodCounter.hours);
-      }
-
-      if (
-        this.periods[this.period].onMinute &&
-        this.periodCounter.minutes > 0
-      ) {
-        this.periods[this.period].onMinute!(this.periodCounter.minutes);
-      }
-
-      if (
-        this.periods[this.period].onSecond &&
-        this.periodCounter.seconds > 0
-      ) {
-        this.periods[this.period].onSecond!(this.periodCounter.seconds);
-      }
-
-      if (this.periodCounter.seconds > 1) {
-        this.periodCounter.seconds--;
-      } else if (this.periodCounter.minutes > 1) {
-        this.periodCounter.minutes--;
-        this.periodCounter.seconds = 59;
-      } else if (this.periodCounter.hours > 1) {
-        this.periodCounter.hours--;
-        this.periodCounter.minutes = 59;
-        this.periodCounter.seconds = 59;
-      } else if (
-        this.periodCounter.hours < 2 &&
-        this.periodCounter.minutes < 2 &&
-        this.periodCounter.seconds < 2
-      ) {
-        if (this.period < this.periods.length - 1) {
-          this.period++;
-        } else {
-          this.period = 0;
+          this.onPeriodChange!(
+            this.periods[this.period],
+            this.periods[nextPeriod],
+            this.periods[prevPeriod]
+          );
         }
 
-        this.periodCounter = { ...this.periods[this.period].duration };
-        this.periodChanged = true;
-      }
-    }, 1000);
-  }
+        if (this.periods[this.period].onHour && this.periodCounter.hours > 0) {
+          this.periods[this.period].onHour!(this.periodCounter.hours);
+        }
 
-  stop() {
-    if (this.intervalId) {
-      clearInterval(this.intervalId);
+        if (
+          this.periods[this.period].onMinute &&
+          this.periodCounter.minutes > 0
+        ) {
+          this.periods[this.period].onMinute!(this.periodCounter.minutes);
+        }
+
+        if (
+          this.periods[this.period].onSecond &&
+          this.periodCounter.seconds > 0
+        ) {
+          this.periods[this.period].onSecond!(this.periodCounter.seconds);
+        }
+
+        if (this.periodCounter.seconds > 1) {
+          this.periodCounter.seconds--;
+        } else if (this.periodCounter.minutes > 1) {
+          this.periodCounter.minutes--;
+          this.periodCounter.seconds = 59;
+        } else if (this.periodCounter.hours > 1) {
+          this.periodCounter.hours--;
+          this.periodCounter.minutes = 59;
+          this.periodCounter.seconds = 59;
+        } else if (
+          this.periodCounter.hours < 2 &&
+          this.periodCounter.minutes < 2 &&
+          this.periodCounter.seconds < 2
+        ) {
+          if (this.period < this.periods.length - 1) {
+            this.period++;
+          } else {
+            this.period = 0;
+          }
+
+          this.periodCounter = { ...this.periods[this.period].duration };
+          this.periodChanged = true;
+        }
+      }, 1000);
+
+      this.running = true;
+
+      if (this.onStart) {
+        this.onStart();
+      }
     }
   }
 
-  addPeriod(period: NPPeriod) {
-    this.periods.push(period);
+  stop(): void {
+    if (this.running) {
+      clearInterval(this.intervalId);
+
+      this.running = false;
+
+      if (this.onStop) {
+        this.onStop();
+      }
+    }
   }
 
-  reset() {
-    this.stop();
+  reset(): void {
+    if (this.running) {
+      this.stop();
+    }
+
     this.period = 0;
+
+    if (this.onReset) {
+      this.onReset();
+    }
+  }
+
+  toggleState(): void {
+    if (this.running) {
+      this.stop();
+    } else {
+      this.start();
+    }
+  }
+
+  addPeriod(period: NPPeriod): void {
+    this.periods.push(period);
   }
 }
 

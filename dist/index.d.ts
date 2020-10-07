@@ -7,6 +7,10 @@ export declare class NPTimer {
     private periodCounter;
     private intervalId?;
     private onPeriodChange?;
+    private onStart?;
+    private onStop?;
+    private onReset?;
+    running: boolean;
     constructor(options: {
         periods: NPPeriod[];
         startImmediately?: boolean;
@@ -14,7 +18,8 @@ export declare class NPTimer {
     });
     start(): void;
     stop(): void;
-    addPeriod(period: NPPeriod): void;
     reset(): void;
+    toggleState(): void;
+    addPeriod(period: NPPeriod): void;
 }
 export default NPTimer;
