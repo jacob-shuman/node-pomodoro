@@ -60,17 +60,29 @@ var NPTimer = /** @class */ (function () {
                         : _this.periods.length - 1;
                     _this.onPeriodChange(_this.periods[_this.periodIndex], _this.periods[nextPeriod], _this.periods[prevPeriod]);
                 }
-                if (_this.periods[_this.periodIndex].onHour &&
-                    _this.periodCounter.hours > 0) {
-                    _this.periods[_this.periodIndex].onHour(_this.periodCounter.hours);
+                if (_this.periodCounter.hours > 0) {
+                    if (_this.periods[_this.periodIndex].onHour) {
+                        _this.periods[_this.periodIndex].onHour(_this.periodCounter.hours);
+                    }
+                    if (_this.onHour) {
+                        _this.onHour(_this.periodCounter.hours);
+                    }
                 }
-                if (_this.periods[_this.periodIndex].onMinute &&
-                    _this.periodCounter.minutes > 0) {
-                    _this.periods[_this.periodIndex].onMinute(_this.periodCounter.minutes);
+                if (_this.periodCounter.minutes > 0) {
+                    if (_this.periods[_this.periodIndex].onMinute) {
+                        _this.periods[_this.periodIndex].onMinute(_this.periodCounter.minutes);
+                    }
+                    if (_this.onMinute) {
+                        _this.onMinute(_this.periodCounter.minutes);
+                    }
                 }
-                if (_this.periods[_this.periodIndex].onSecond &&
-                    _this.periodCounter.seconds > 0) {
-                    _this.periods[_this.periodIndex].onSecond(_this.periodCounter.seconds);
+                if (_this.periodCounter.seconds > 0) {
+                    if (_this.periods[_this.periodIndex].onSecond) {
+                        _this.periods[_this.periodIndex].onSecond(_this.periodCounter.seconds);
+                    }
+                    if (_this.onSecond) {
+                        _this.onSecond(_this.periodCounter.seconds);
+                    }
                 }
                 if (_this.periodCounter.seconds > 1) {
                     _this.periodCounter.seconds--;

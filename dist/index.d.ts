@@ -10,6 +10,9 @@ export declare class NPTimer {
     onStart?: () => void;
     onStop?: () => void;
     onReset?: () => void;
+    onHour?: (hour: number) => void;
+    onMinute?: (minute: number) => void;
+    onSecond?: (second: number) => void;
     get period(): NPPeriod;
     running: boolean;
     constructor(options: {
@@ -19,6 +22,9 @@ export declare class NPTimer {
         onStart?: () => void;
         onStop?: () => void;
         onReset?: () => void;
+        onHour?: (hour: number) => void;
+        onMinute?: (minute: number) => void;
+        onSecond?: (second: number) => void;
     });
     start(): void;
     stop(): void;
