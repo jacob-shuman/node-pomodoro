@@ -6,16 +6,19 @@ export declare class NPTimer {
     private periodChanged;
     private periodCounter;
     private intervalId?;
-    private onPeriodChange?;
-    private onStart?;
-    private onStop?;
-    private onReset?;
+    onPeriodChange?: (period: NPPeriod, nextPeriod: NPPeriod, prevPeriod: NPPeriod) => void;
+    onStart?: () => void;
+    onStop?: () => void;
+    onReset?: () => void;
     get period(): NPPeriod;
     running: boolean;
     constructor(options: {
         periods: NPPeriod[];
         startImmediately?: boolean;
         onPeriodChange?: (period: NPPeriod, nextPeriod: NPPeriod, prevPeriod: NPPeriod) => void;
+        onStart?: () => void;
+        onStop?: () => void;
+        onReset?: () => void;
     });
     start(): void;
     stop(): void;

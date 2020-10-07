@@ -16,14 +16,14 @@ export class NPTimer {
 
   private intervalId?: number;
 
-  private onPeriodChange?: (
+  onPeriodChange?: (
     period: NPPeriod,
     nextPeriod: NPPeriod,
     prevPeriod: NPPeriod
   ) => void;
-  private onStart?: () => void;
-  private onStop?: () => void;
-  private onReset?: () => void;
+  onStart?: () => void;
+  onStop?: () => void;
+  onReset?: () => void;
 
   public get period(): NPPeriod {
     return this.periods[this.periodIndex];
@@ -39,6 +39,9 @@ export class NPTimer {
       nextPeriod: NPPeriod,
       prevPeriod: NPPeriod
     ) => void;
+    onStart?: () => void;
+    onStop?: () => void;
+    onReset?: () => void;
   }) {
     const { periods, startImmediately, onPeriodChange } = options;
 
